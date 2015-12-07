@@ -8,13 +8,30 @@
 </head>
 <body>
 	<div id="wrapper">
-		<div id="lives"></div>
+		<div id="lives">3</div>
 		<span id="coin"></span>
 		<span id="heart"></span>
-		<span id="score"></span>
+		<span id="score">0</span>
+		<div id="countDown"></div>
 		<div id="logo">
 			<img src="img/logo.png" height="134" width="565" alt="">
 			<button id="start">Start Game</button>
+		</div>
+		<div id="chooseCharacter">
+			<h1>Choose a Character</h1>
+			<div id="jerrySkin" class="charSkin" data-skin-name='jerry'>
+				<img src="img/jerry.png" alt="">
+			</div>
+			<div id="mortySkin" class="charSkin" data-skin-name='morty'>
+				<img src="img/morty.png" alt="">
+			</div>
+			<div id="rickSkin" class="charSkin" data-skin-name='rick'>
+				<img src="img/rick.png" alt="">
+			</div>
+			<div id="mrpbSkin" class="charSkin" data-skin-name='mrpb'>
+				<img src="img/mrpb.png" alt="">
+			</div>
+			<button id="begin">Begin Game</button>
 		</div>
 		<div id="over">
 			<h1>Game Over</h1>
@@ -22,7 +39,7 @@
 			<button id="reset">Restart</button>
 		</div>
 		<div id="character">
-			<img src="img/DudeWalking copy.png"  alt="">
+			<img src="img/jerry.png"  alt="">
 		</div>
 		<div id="platform"></div>
 	</div>

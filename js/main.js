@@ -4,12 +4,14 @@ $(document).ready(function(){
 	var yes = document.getElementById('yes');
 	var background = document.getElementById('background');
 	var slow = document.getElementById('slow');
+	var jumpSound = new Audio('../jump.wav');
 	var keys = {};
 	var sprite = 0;
 	var counter = 0;
 	var frames = 0;
 	var direc = '';
 	var score = 0;
+	var hiScore = 0;
 	var charPos = 0;
 	var lives = 3;
 	var coinCounter = 0;
@@ -21,10 +23,24 @@ $(document).ready(function(){
 	var freqApple = 100;
 	var freqRotten = 100;
 	var game;
+	var countdown = 3;
 
 	background.volume = 0.7;
 	yes.volume = 0.4;
 	slow.volume = 0.4;
+
+	// $('#character').hide();
+
+	$('.charSkin').click(function(e){
+		e.preventDefault();
+		audio.play();
+		var skin = $(this).attr('data-skin-name');
+		console.log(skin);
+		$('#character img').attr('src', './img/' + skin + '.png');
+		$('.charSkin').removeClass('zoomAnim');
+		$(this).addClass('zoomAnim');
+
+	})
 
 
 	$(this).keydown(function(e) {
@@ -213,6 +229,7 @@ $(document).ready(function(){
 	 
 	function jump() {
 		if (isJumping == false) {
+			jumpSound.play(); 
 		    yVel = -17;
 		    isJumping = true;
 		}
@@ -228,10 +245,18 @@ $(document).ready(function(){
 	}
 	console.log(character.position().top);
 	function render(){
+		// game = window.requestAnimationFrame(render);	
 		if(lives === 0){
 			window.clearInterval(game);
 			$('#over h3 span').html(score);
+			$('.apple, .rotten').remove();
 			$('#over').fadeIn(300);
+			character.animate({
+				bottom:'70px'
+			},200);
+			if(score > hiScore){
+				hiScore = score;
+			}
 		}
 		if (isJumping) {
 			yVel += gravity;
@@ -287,10 +312,7 @@ $(document).ready(function(){
 	        }
 
 	        if (direction == 38) {
-				audio.play();
-	            // character.animate({top: "-=50"}, 100);  
 				jump();
-
 				characterImg.css({
 					left: -characterImg.width()/9
 				})
@@ -301,13 +323,38 @@ $(document).ready(function(){
 	}
 	$('#start').click(function(e){
 		e.preventDefault();
-		$('#logo').hide();
-		game = window.setInterval(render, 10);
+		$('#logo').fadeOut(400);
+		$('#chooseCharacter').fadeIn(400);
+		// game = window.setInterval(render, 10);
+	})
+	$('#begin').click(function(e){
+		$('#chooseCharacter').fadeOut(200);
+		$('#countDown').html(countdown);
+		$('#platform,#character').animate({
+			bottom:'+=200'
+		},1000);
+		var countdownInt = window.setInterval(function(){
+			$('#countDown').html(countdown);
+			countdown--
+			if(countdown === -1){
+				window.clearInterval(countdownInt)
+				$('#countDown').hide();
+			}
+		}, 1000)
+		window.setTimeout(function(){
+			game = window.setInterval(render,10);
+		// game = window.requestAnimationFrame(render);	
+
+		}, 3000)
+
 	})
 	$('#reset').click(function(e){
 		e.preventDefault();
 		reset();
 		$("#over").hide();
+		clearInterval(game);
+		// window.requestAnimationFrame(game);
+		// game = window.requestAnimationFrame(render);	
 		game = window.setInterval(render, 10);
 	})
 
